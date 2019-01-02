@@ -7,7 +7,7 @@ import getpass
 import base64
 import binascii
 
-#opens file and returns salt and ciphertext
+#Helper Function to open encrypted file and split salt and ciphertext
 def open_file(filename):
     try:
         file = open(filename, "rb")
@@ -19,11 +19,11 @@ def open_file(filename):
         print('There is an issue opening the file')
         sys.exit(2)
 
-#generates 32 bytes base64 encoded argon2 key
+#Helper that generates 32 bytes base64 encoded argon2 key
 def generate_key(password, salt):
     return base64.urlsafe_b64encode(argon2.argon2_hash(password=password, salt=salt, t=1000, buflen=32))
 
-#decrypts file ciphertext and overwrites file with decrypted content
+#Helper that decrypts ciphertext and overwrites file with decrypted content
 def decrypt_file(password, filename):
     salt, ciphertext = open_file(filename)
     key = generate_key(password, salt)
@@ -45,7 +45,7 @@ def decrypt_file(password, filename):
         print('There is an issue writing to the file')
         sys.exit(2)
 
-#create encrypted file
+#Uses Fernet to Encrypt file contents
 def encrypt_file(password, filename):
     salt = secrets.token_bytes(32)
     key = generate_key(password, salt)
@@ -71,7 +71,6 @@ def encrypt_file(password, filename):
         sys.exit(2)
 
 def main(argv):
-    #decrypt
     try:
         opts, args = getopt.getopt(argv,'de',['encrypt', 'decrpyt'])
 
@@ -89,6 +88,5 @@ def main(argv):
     except getopt.GetoptError:
         print('enc_file.py <option> <file>')
         sys.exit(2)
-
 
 main(sys.argv)
