@@ -17,7 +17,7 @@ def open_file(filename):
         return salt, ciphertext
     except IOError:
         print('There is an issue opening the file')
-        sys.exit(2)
+        sys.exit(1)
 
 #Helper that generates 32 bytes base64 encoded argon2 key
 def generate_key(password, salt):
@@ -34,7 +34,7 @@ def decrypt_file(password, filename):
         content = f.decrypt(ciphertext)
     except cryptography.fernet.InvalidToken:
         print('There is an issue decrypting the file')
-        sys.exit(2)
+        sys.exit(1)
 
     try:
         file = open(filename, "wb+")
@@ -43,7 +43,7 @@ def decrypt_file(password, filename):
         print('File Content Successfully Decrypted')
     except IOError:
         print('There is an issue writing to the file')
-        sys.exit(2)
+        sys.exit(1)
 
 #Uses Fernet to Encrypt file contents
 def encrypt_file(password, filename):
@@ -58,7 +58,7 @@ def encrypt_file(password, filename):
         file.close()
     except IOError:
         print('There is an issue opening the file')
-        sys.exit(2)
+        sys.exit(1)
 
     try:
         encfile = open(filename, "wb+")
@@ -68,7 +68,7 @@ def encrypt_file(password, filename):
         print('File Content Successfully Encrypted')
     except IOError:
         print('There is an issue writing to the file')
-        sys.exit(2)
+        sys.exit(1)
 
 def main(argv):
     try:
