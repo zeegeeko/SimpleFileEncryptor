@@ -1,4 +1,5 @@
 from cryptography.fernet import Fernet
+import cryptography.fernet
 import argon2
 import sys
 import getopt
